@@ -34,7 +34,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+static uint8_t * const g_bkpsram_buffer = (void*)BKPSRAM_BASE;
+static uint8_t g_ccram_buffer[1024] __attribute__((section(".ccmram")));
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -51,7 +52,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+static void BackupSRAM_Init(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -82,7 +83,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  BackupSRAM_Init();
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -161,6 +162,16 @@ int __io_putchar(int ch)
 {
   ITM_SendChar(ch);
   return (ch);
+}
+
+
+static void BackupSRAM_Init(void)
+{
+  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_RCC_BKPSRAM_CLK_ENABLE();
+
+  HAL_PWR_EnableBkUpAccess();
+  HAL_PWREx_EnableBkUpReg();
 }
 /* USER CODE END 4 */
 

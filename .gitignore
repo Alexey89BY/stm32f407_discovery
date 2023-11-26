@@ -60,3 +60,5 @@ Release/makefile
 *.ld
 *.launch
 .mxproject
+.settings/language.settings.xml
+.settings/com.st.stm32cube.ide.mcu.sfrview.prefs
